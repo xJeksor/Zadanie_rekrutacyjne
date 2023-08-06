@@ -4,11 +4,92 @@
 
 <a href="{% url 'expenses:expense-create' %}">add</a>
 
+
 <form method="get" action="">
-  {{form.as_p}}
-  <button type="submit">search</button>
-</form>
+	<div>
+	  <label for="{{ form.name.id_for_label }}">Name:</label>
+	  {{ form.name }}
+	</div>
+	<button type="submit">Search Name</button>
+  </form>
+  
+
+  <form method="get" action="">
+	<div>
+	  <label for="{{ form.date_from.id_for_label }}">Date from:</label>
+	  {{ form.date_from }}
+	</div>
+	<button type="submit" name="search_date_from">Search Date From</button>
+  </form>
+  
+
+  <form method="get" action="">
+	<div>
+	  <label for="{{ form.date_to.id_for_label }}">Date to:</label>
+	  {{ form.date_to }}
+	</div>
+	<button type="submit" name="search_date_to">Search Date To</button>
+  </form>
+  
+
+  <form method="get" action="">
+	<div>
+	  <label for="{{ form.date_from.id_for_label }}">Date from:</label>
+	  {{ form.date_from }}
+	  <label for="{{ form.date_to.id_for_label }}">Date to:</label>
+	  {{ form.date_to }}
+	</div>
+	<button type="submit" name="search_date_range">Search Date Range</button>
+  </form>
+  
+
+  <form method="get" action="">
+	<div>
+	  <label>Categories:</label>
+	  {% for category in form.categories %}
+		{{ category }}
+	  {% endfor %}
+	</div>
+	<button type="submit" name="search_categories">Search Categories</button>
+  </form>
+
 <br>
+
+
+<p>Sort by:</p>
+<ul>
+  <li><a href="?sort_by=category_asc">Category (A-Z)</a></li>
+  <li><a href="?sort_by=category_desc">Category (Z-A)</a></li>
+  <li><a href="?sort_by=date_asc">Date (Oldest first)</a></li>
+  <li><a href="?sort_by=date_desc">Date (Newest first)</a></li>
+</ul>
+
+<p>Total amount spent: ${{ total_amount_spent|floatformat:2 }}</p>
+
+
+<table border="1">
+	<caption>Summary per year-month</caption>
+	<thead>
+	  <tr>
+		<th>Year-Month</th>
+		<th>Total Summary</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  {% for item in summary_per_year_month %}
+		<tr>
+		  <td>{{ item.year_month|date:"F Y" }}</td>
+		  <td>{{ item.total_summary|floatformat:2 }}</td>
+		</tr>
+	  {% empty %}
+		<tr>
+		  <td colspan="2">No data available.</td>
+		</tr>
+	  {% endfor %}
+	</tbody>
+  </table>
+  
+
 <table border="1">
 	<caption>Expenses</caption>
 	<thead>
